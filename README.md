@@ -27,3 +27,6 @@ CIP will gather information using a python library or maybe some other tool. Thi
 ####Number of connections open overall and per process
 
 ####Network I/O stats system wide
+
+#Gerrit
+This repository is managed by gerrit. 
