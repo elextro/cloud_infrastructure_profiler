@@ -1,13 +1,10 @@
-#Unit tests for the pluginloader
-
-
 import unittest
 import yaml
 import sys
 from osprofiler.osprofiler import PluginLoader
 
-class TestPluginLoader(unittest.TestCase):
 
+class TestPluginLoader(unittest.TestCase):
 
     def setUp(self):
         print "setup method is being called"
@@ -15,19 +12,18 @@ class TestPluginLoader(unittest.TestCase):
 
         sys.path.insert(0, "../../plugins")
 
-		#Eventually we can test to see if a bad yaml file
-		#Raises an exception.
+        # Eventually we can test to see if a bad yaml file
+        # Raises an exception.
         with open(CONFIG_FILE, 'r') as f:
-		    config = f.read()	
+            config = f.read()
 
-        #Loading the yaml config file to a python dict
+        # Loading the yaml config file to a python dict
         config = yaml.load(config)
         self.config = config
 
         self.loader = PluginLoader(config)
 
-	
-	#Test load_plugins method
+    # Test load_plugins method
     def test_load_plugins(self):
         """
         This method tests to see if the load plugins method
@@ -39,26 +35,25 @@ class TestPluginLoader(unittest.TestCase):
         the config
         """
         self.agent_object_dict = self.loader.load_plugins()
-        #Checking to see if the returned value is a dict
-        self.assertTrue(isinstance(self.agent_object_dict,dict))
+        # Checking to see if the returned value is a dict
+        self.assertTrue(isinstance(self.agent_object_dict, dict))
 
-        #Verifying the values of the dict
+        # Verifying the values of the dict
         for agent, agent_obj in self.agent_object_dict.iteritems():
 
-            #Testing the type of keys returned by PluginLoader
-            #Should be string
-            self.assertTrue(isinstance(agent,str))
+            # Testing the type of keys returned by PluginLoader
+            # Should be string
+            self.assertTrue(isinstance(agent, str))
 
-            #Testing to see if agent loaded matches the object
-            #The agent objects name attribute should match
-            #What PluginLoader returned
-            process_config=getattr(agent_obj, "agent_config")
-            self.assertTrue(agent == process_config['name'] )
-        
+            # Testing to see if agent loaded matches the object attributes.
+            # The agent object's name attribute should match
+            # what PluginLoader returns
+            process_config = getattr(agent_obj, "agent_config")
+            self.assertTrue(agent == process_config['name'])
 
 
 if __name__ == '__main__':
-	unittest.main()
+    unittest.main()
 #  suite = unittest.TestLoader().loadTestsFromTestCase(TestPluginLoader)
 #  result = unittest.TestResult()
 #  suite.run(result)
