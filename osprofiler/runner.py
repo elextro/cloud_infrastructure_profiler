@@ -5,6 +5,7 @@ import psutil
 import sys
 import time
 import yaml
+import importlib
 
 
 # GLOBAL CONSTANTS
@@ -25,13 +26,15 @@ class PluginLoader:
         """
 
         agent_object_dict = {}
-        sys.path.insert(0, PLUGINS)
+        #sys.path.insert(0, PLUGINS)
         for agent in self.agent_list:
             try:
-                loaded_mod = __import__(agent['plugin'])
-                class_name =  self._get_class_name( agent['plugin'])
+                # Getting the plugin name so we can derive the class name.
+                module_name = agent['plugin'].split(".")[-1]
+                class_name =  self._get_class_name(module_name)
                 # Load class from imported module, instantiate an object,  and store it in dict
-                agent_object_dict[agent['name']] = getattr(loaded_mod, class_name)(agent)
+                my_module = importlib.import_module(agent['plugin'])
+                agent_object_dict[agent['name']] = getattr(my_module, class_name)(agent)
                 print "Loaded %s " % agent['plugin']
             except Exception as ex:
                 print "Error loading :"

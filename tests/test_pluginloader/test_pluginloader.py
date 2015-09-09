@@ -1,16 +1,14 @@
 import unittest
 import yaml
 import sys
-from osprofiler.osprofiler import PluginLoader
+from osprofiler import runner
 
 
 class TestPluginLoader(unittest.TestCase):
 
     def setUp(self):
         print "setup method is being called"
-        CONFIG_FILE = "../test-config.conf"
-
-        sys.path.insert(0, "../../plugins")
+        CONFIG_FILE = "../test_config.conf"
 
         # Eventually we can test to see if a bad yaml file
         # Raises an exception.
@@ -21,7 +19,7 @@ class TestPluginLoader(unittest.TestCase):
         config = yaml.load(config)
         self.config = config
 
-        self.loader = PluginLoader(config)
+        self.loader = runner.PluginLoader(config)
 
     # Test load_plugins method
     def test_load_plugins(self):
